@@ -1,0 +1,29 @@
+
+rgbnir_dir: # rgbnir_dir/RGB/rgb_images and rgbnir_dir/NIR/nir_images
+cloud_dir: # cloud_dir/cloud_images
+out_dir: results
+
+cuda: True
+gpu_ids: [0]
+
+batchsize: 1
+test_batchsize: 1
+epoch: 300
+n_data: 10000
+imlist: train_files.pkl
+size: 256
+threads: 4
+
+lr: 0.0002
+beta1: 0.5
+lamb: 100
+minimax: 1
+
+gen_model: unet
+gen_init: 
+dis_init: 
+in_ch: 4
+out_ch: 3
+
+manualSeed: 0
+snapshot_interval: 50
