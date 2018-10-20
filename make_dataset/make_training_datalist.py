@@ -37,7 +37,7 @@ def alexnet_tsne(path_in, cuda):
 
     filenames = []
     features = []
-    for filename in tqdm(list(path_in.glob('**/*.png'))[:1000]):
+    for filename in tqdm(list(path_in.glob('**/*.png'))):
         image = Image.open(filename).convert('RGB')
         image = image.resize((224, 224))
         image = transform(image).unsqueeze(0)
