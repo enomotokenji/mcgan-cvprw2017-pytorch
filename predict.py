@@ -22,7 +22,7 @@ def predict(config, args):
     print('===> Loading models')
 
     if config.gen_model == 'unet':
-        gen = UNet(in_ch=config.in_ch, out_ch=config.out_ch, gpu_ids=config.gpu_ids)
+        gen = UNet(in_ch=config.in_ch, out_ch=config.out_ch, gpu_ids=args.gpu_ids)
 
     param = torch.load(args.pretrained)
     gen.load_state_dict(param)
@@ -39,17 +39,21 @@ def predict(config, args):
             out = gen(x)
 
             h = 1
-            w = 3
+            w = 4
             c = 3
             p = config.size
 
             allim = np.zeros((h, w, c, p, p))
             x_ = x.cpu().numpy()[0]
-            rgb = x_[:3]
-            nir = x_[3]
-            allim[0, 0, :] = np.repeat(nir[None, :, :], repeats=3, axis=0) * 127.5 + 127.5
-            allim[0, 1, :] = rgb * 127.5 + 127.5
-            allim[0, 2, :] = np.clip(out.cpu().numpy()[0], -1, 1) * 127.5 + 127.5
+            out_ = out.cpu().numpy()[0]
+            in_rgb = x_[:3]
+            in_nir = x_[3]
+            out_rgb = np.clip(out_[:3], -1, 1)
+            out_cloud = np.clip(out_[3], -1, 1)
+            allim[0, 0, :] = np.repeat(in_nir[None, :, :], repeats=3, axis=0) * 127.5 + 127.5
+            allim[0, 1, :] = in_rgb * 127.5 + 127.5
+            allim[0, 2, :] = out_rgb * 127.5 + 127.5
+            allim[0, 3, :] = np.repeat(out_cloud[None, :, :], repeats=3, axis=0) * 127.5 + 127.5
             allim = allim.transpose(0, 3, 1, 4, 2)
             allim = allim.reshape((h*p, w*p, c))
 

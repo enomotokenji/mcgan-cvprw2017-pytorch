@@ -20,28 +20,36 @@ def test(config, test_data_loader, gen, criterionMSE, epoch):
 
         if epoch % config.snapshot_interval == 0:
             h = 1
-            w = 4
+            w = 6
             c = 3
             p = config.size
 
             allim = np.zeros((h, w, c, p, p))
             x_ = x.cpu().numpy()[0]
-            rgb = x_[:3]
-            nir = x_[3]
-            allim[0, 0, :] = np.repeat(nir[None, :, :], repeats=3, axis=0) * 127.5 + 127.5
-            allim[0, 1, :] = rgb * 127.5 + 127.5
-            allim[0, 2, :] = t.cpu().numpy()[0] * 127.5 + 127.5
-            allim[0, 3, :] = np.clip(out.cpu().numpy()[0], -1, 1) * 127.5 + 127.5
+            t_ = t.cpu().numpy()[0]
+            out_ = out.cpu().numpy()[0]
+            in_rgb = x_[:3]
+            in_nir = x_[3]
+            t_rgb = t_[:3]
+            t_cloud = t_[3]
+            out_rgb = np.clip(out_[:3], -1, 1)
+            out_cloud = np.clip(out_[3], -1, 1)
+            allim[0, 0, :] = np.repeat(in_nir[None, :, :], repeats=3, axis=0) * 127.5 + 127.5
+            allim[0, 1, :] = in_rgb * 127.5 + 127.5
+            allim[0, 2, :] = out_rgb * 127.5 + 127.5
+            allim[0, 3, :] = np.repeat(out_cloud[None, :, :], repeats=3, axis=0) * 127.5 + 127.5
+            allim[0, 4, :] = t_rgb * 127.5 + 127.5
+            allim[0, 5, :] = np.repeat(t_cloud[None, :, :], repeats=3, axis=0) * 127.5 + 127.5
             allim = allim.transpose(0, 3, 1, 4, 2)
             allim = allim.reshape((h*p, w*p, c))
 
-            save_image(config, allim, i, epoch)
+            save_image(config.out_dir, allim, i, epoch)
 
         mse = criterionMSE(out, t)
         psnr = 10 * np.log10(1 / mse.item())
 
-        img1 = np.tensordot(out.cpu().numpy()[0].transpose(1, 2, 0), [0.298912, 0.586611, 0.114478], axes=1)
-        img2 = np.tensordot(t.cpu().numpy()[0].transpose(1, 2, 0), [0.298912, 0.586611, 0.114478], axes=1)
+        img1 = np.tensordot(out.cpu().numpy()[0, :3].transpose(1, 2, 0), [0.298912, 0.586611, 0.114478], axes=1)
+        img2 = np.tensordot(t.cpu().numpy()[0, :3].transpose(1, 2, 0), [0.298912, 0.586611, 0.114478], axes=1)
         
         ssim = SSIM(img1, img2)
         avg_mse += mse.item()
