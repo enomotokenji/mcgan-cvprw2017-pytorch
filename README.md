@@ -30,3 +30,6 @@ python train.py
 ```bash
 python predict.py --config <path_to_config.yml_in_the_out_dir> --test_dir <path_to_a_directory_stored_test_data> --out_dir <path_to_an_output_directory> --pretrained <path_to_a_pretrained_model> --cuda
 ```
+
+## Pre-trained model
+You can download pre-trained model from [here](https://drive.google.com/open?id=1_EooDDOxkHoZ5YvUhcxutvVBCcH4FYNI).
