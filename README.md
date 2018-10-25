@@ -1,6 +1,8 @@
 # Multispectral conditional Generative Adversarial Nets
 This repository is an implementation of ["Filmy Cloud Removal on Satellite Imagery with Multispectral Conditional Generative Adversarial Nets"](https://arxiv.org/abs/1710.04835).
 
+![Results](images/results.png)
+
 ## Requirements
 I recommend Anaconda to manage your Python libraries.  
 Because it is easy to install some of the libraries necessary to prepare the data.  
