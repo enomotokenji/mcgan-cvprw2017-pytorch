@@ -29,7 +29,7 @@ def train(config):
     print('===> Loading datasets')
 
     dataset = Dataset(config)
-    train_size = int(0.8 * len(dataset))
+    train_size = int(0.9 * len(dataset))
     test_size = len(dataset) - train_size
     train_dataset, test_dataset = torch.utils.data.random_split(dataset, [train_size, test_size])
     training_data_loader = DataLoader(dataset=train_dataset, num_workers=config.threads, batch_size=config.batchsize, shuffle=True)
@@ -153,8 +153,8 @@ def train(config):
         if epoch % config.snapshot_interval == 0:
             checkpoint(config, epoch, gen, dis)
 
-    logreport.save_lossgraph()
-    testreport.save_lossgraph()
+        logreport.save_lossgraph()
+        testreport.save_lossgraph()
 
 
 if __name__ == '__main__':
