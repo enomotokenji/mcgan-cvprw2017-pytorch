@@ -35,3 +35,6 @@ python predict.py --config <path_to_config.yml_in_the_out_dir> --test_dir <path_
 
 ## Pre-trained model
 You can download a pre-trained model from [here](https://drive.google.com/open?id=1_EooDDOxkHoZ5YvUhcxutvVBCcH4FYNI).
+
+## License
+Academic use only.
