@@ -65,7 +65,7 @@ class TestDataset(data.Dataset):
 
         x = x.transpose(2, 0, 1)
 
-        return x
+        return x, filename
 
     def __len__(self):
 

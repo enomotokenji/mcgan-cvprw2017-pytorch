@@ -27,9 +27,12 @@ def gpu_manage(config):
         print("WARNING: You have a CUDA device, so you should probably run with --cuda")
 
 
-def save_image(out_dir, x, num, epoch):
+def save_image(out_dir, x, num, epoch, filename=None):
     test_dir = os.path.join(out_dir, 'epoch_{0:04d}'.format(epoch))
-    test_path = os.path.join(test_dir, 'test_{0:04d}.png'.format(num))
+    if filename is not None:
+        test_path = os.path.join(test_dir, filename)
+    else:
+        test_path = os.path.join(test_dir, 'test_{0:04d}.png'.format(num))
 
     if not os.path.exists(test_dir):
         os.makedirs(test_dir)

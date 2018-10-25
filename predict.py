@@ -32,7 +32,8 @@ def predict(config, args):
 
     with torch.no_grad():
         for i, batch in enumerate(tqdm(data_loader)):
-            x = Variable(batch)
+            x = Variable(batch[0])
+            filename = batch[1][0]
             if args.cuda:
                 x = x.cuda()
 
@@ -57,7 +58,7 @@ def predict(config, args):
             allim = allim.transpose(0, 3, 1, 4, 2)
             allim = allim.reshape((h*p, w*p, c))
 
-            save_image(args.out_dir, allim, i, 1)
+            save_image(args.out_dir, allim, i, 1, filename=filename)
 
 
 if __name__ == '__main__':
