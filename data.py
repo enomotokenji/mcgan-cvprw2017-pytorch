@@ -30,8 +30,10 @@ class Dataset(data.Dataset):
         cloud_rgb = (1. - alpha) * rgb + alpha * cloud[:, :, :3]
         cloud_rgb = np.clip(cloud_rgb, 0., 255.)
 
+        cloud_mask = cloud[:, :, 3]
+
         x = np.concatenate((cloud_rgb, nir[:, :, None]), axis=2)
-        t = rgb
+        t = np.concatenate((rgb, cloud_mask[:, :, None]), axis=2)
 
         x = x / 127.5 - 1
         t = t / 127.5 - 1
